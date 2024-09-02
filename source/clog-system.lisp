@@ -190,8 +190,10 @@ BOOT-FILE will be used. If BOOT-FILE is nil path is removed."
 for openning windows on remote machines."
   #+windows
   (uiop:launch-program (list "rundll32" "url.dll,FileProtocolHandler" url))
-  #+linux
+  #+(and linux (not android))
   (uiop:launch-program (list "xdg-open" url))
+  #+(and linux android)
+  (uiop:launch-program (list "termux-open-url" url))
   #+darwin
   (uiop:launch-program (list "open" url)))
 
